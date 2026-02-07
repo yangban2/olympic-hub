@@ -1,0 +1,42 @@
+name: Update Medal Data
+
+on:
+  schedule:
+    # 2시간마다 실행 (UTC 기준, 한국시간 -9시간)
+    - cron: '0 */2 * * *'
+  workflow_dispatch: # 수동 실행 가능
+
+jobs:
+  update-medals:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          
+      - name: Install pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: 10
+          
+      - name: Install dependencies
+        run: pnpm install
+        
+      - name: Scrape medal data
+        run: |
+          # 브라우저 없이는 스크래핑 불가능하므로
+          # API 호출로 대체 (Vercel 프로덕션 엔드포인트)
+          curl -X GET "https://olympic-hub.naroo.app/api/scrape-medals"
+          
+      - name: Trigger Vercel rebuild (if needed)
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+        run: |
+          # Vercel API로 재배포 트리거
+          # (필요시 환경변수에 VERCEL_TOKEN 추가)
+          echo "Medal data updated at $(date)"

@@ -1,7 +1,26 @@
+"use client";
+
+import { motion } from "framer-motion";
 import Link from "next/link";
 import { Medal, Calendar, TrendingUp, Trophy, AlertCircle } from "lucide-react";
 import { medalStandings, upcomingEvents, highlights, koreaInitialData, expectedMedalStandings } from "@/lib/data";
 import { formatDate, getMedalEmoji } from "@/lib/utils";
+
+// 애니메이션 variants
+const fadeInUp = {
+  hidden: { opacity: 0, y: 20 },
+  visible: { opacity: 1, y: 0 },
+};
+
+const staggerContainer = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.1,
+    },
+  },
+};
 
 export default function Home() {
   // 한국 메달 현황 (아직 메달 없음)
@@ -22,18 +41,35 @@ export default function Home() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-blue-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900">
       {/* Hero Section */}
-      <section className="relative overflow-hidden bg-gradient-to-r from-blue-600 to-blue-800 text-white py-20 px-4">
+      <motion.section
+        className="relative overflow-hidden bg-gradient-to-r from-blue-600 to-blue-800 text-white py-20 px-4"
+        initial="hidden"
+        animate="visible"
+        variants={staggerContainer}
+      >
         <div className="max-w-6xl mx-auto text-center relative z-10">
-          <div className="inline-block mb-4 px-4 py-2 bg-white/20 backdrop-blur-sm rounded-full text-sm font-medium">
+          <motion.div
+            className="inline-block mb-4 px-4 py-2 bg-white/20 backdrop-blur-sm rounded-full text-sm font-medium"
+            variants={fadeInUp}
+          >
             🎿 2026년 2월 6일 ~ 22일
-          </div>
-          <h1 className="text-5xl md:text-7xl font-bold mb-4 bg-clip-text text-transparent bg-gradient-to-r from-white to-blue-100">
+          </motion.div>
+          <motion.h1
+            className="text-5xl md:text-7xl font-bold mb-4 bg-clip-text text-transparent bg-gradient-to-r from-white to-blue-100"
+            variants={fadeInUp}
+          >
             Olympic Hub
-          </h1>
-          <p className="text-xl md:text-2xl mb-8 text-blue-100">
+          </motion.h1>
+          <motion.p
+            className="text-xl md:text-2xl mb-8 text-blue-100"
+            variants={fadeInUp}
+          >
             밀라노-코르티나 동계올림픽 실시간 대시보드
-          </p>
-          <div className="flex flex-wrap justify-center gap-4">
+          </motion.p>
+          <motion.div
+            className="flex flex-wrap justify-center gap-4"
+            variants={fadeInUp}
+          >
             <Link
               href="/dashboard"
               className="inline-flex items-center gap-2 px-8 py-4 bg-white text-blue-600 rounded-full font-bold hover:bg-blue-50 transition-all transform hover:scale-105 shadow-lg"
@@ -48,7 +84,7 @@ export default function Home() {
               <Trophy className="w-5 h-5" />
               메달 예측 게임
             </Link>
-          </div>
+          </motion.div>
         </div>
         
         {/* 배경 장식 */}
@@ -58,10 +94,16 @@ export default function Home() {
           <div className="absolute bottom-10 left-1/4 text-7xl">⛸️</div>
           <div className="absolute bottom-20 right-1/3 text-5xl">🥌</div>
         </div>
-      </section>
+      </motion.section>
 
       {/* 한국 메달 현황 */}
-      <section className="max-w-6xl mx-auto px-4 py-12">
+      <motion.section
+        className="max-w-6xl mx-auto px-4 py-12"
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, margin: "-100px" }}
+        variants={staggerContainer}
+      >
         <div className="bg-gradient-to-br from-red-50 to-blue-50 dark:from-gray-800 dark:to-gray-700 rounded-3xl p-8 shadow-xl border-2 border-blue-200 dark:border-gray-600">
           <div className="flex items-center gap-3 mb-6">
             <span className="text-4xl">{koreaStats?.flag}</span>
@@ -114,7 +156,7 @@ export default function Home() {
             )}
           </div>
         </div>
-      </section>
+      </motion.section>
 
       {/* 메달 순위 TOP 10 */}
       <section className="max-w-6xl mx-auto px-4 py-12">
