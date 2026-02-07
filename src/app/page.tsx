@@ -1,10 +1,13 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import Link from "next/link";
 import { Medal, Calendar, TrendingUp, Trophy, AlertCircle } from "lucide-react";
-import { medalStandings, upcomingEvents, highlights, koreaInitialData, expectedMedalStandings } from "@/lib/data";
+import { upcomingEvents, highlights, koreaInitialData, expectedMedalStandings } from "@/lib/data";
 import { formatDate, getMedalEmoji } from "@/lib/utils";
+import { fetchMedalData, findKoreaMedal } from "@/lib/fetch-data";
+import type { CountryMedal } from "@/types";
 
 // 애니메이션 variants
 const fadeInUp = {
@@ -23,8 +26,23 @@ const staggerContainer = {
 };
 
 export default function Home() {
-  // 한국 메달 현황 (아직 메달 없음)
-  const koreaStats = medalStandings.find((c) => c.countryCode === "KR") || koreaInitialData;
+  const [medalStandings, setMedalStandings] = useState<CountryMedal[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  // 실제 메달 데이터 fetch
+  useEffect(() => {
+    async function loadData() {
+      const data = await fetchMedalData();
+      if (data && data.medals.length > 0) {
+        setMedalStandings(data.medals);
+      }
+      setLoading(false);
+    }
+    loadData();
+  }, []);
+
+  // 한국 메달 현황
+  const koreaStats = findKoreaMedal(medalStandings) || koreaInitialData;
   
   // 메달이 아직 없는지 체크
   const noMedalsYet = medalStandings.length === 0;

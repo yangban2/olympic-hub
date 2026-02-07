@@ -3,12 +3,13 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { Medal, Calendar, TrendingUp, ExternalLink, RefreshCw, Clock } from "lucide-react";
-import { medalStandings, upcomingEvents, highlights, koreaInitialData, expectedMedalStandings, koreanAthletes } from "@/lib/data";
+import { upcomingEvents, highlights, koreaInitialData, expectedMedalStandings, koreanAthletes } from "@/lib/data";
 import { formatDate, getMedalEmoji, getRelativeTime } from "@/lib/utils";
+import { fetchMedalData } from "@/lib/fetch-data";
 import type { CountryMedal } from "@/types";
 
 export default function Dashboard() {
-  const [medals, setMedals] = useState<CountryMedal[]>(medalStandings);
+  const [medals, setMedals] = useState<CountryMedal[]>([]);
   const [lastUpdate, setLastUpdate] = useState<string>(new Date().toISOString());
   const [loading, setLoading] = useState(false);
 
@@ -21,27 +22,36 @@ export default function Dashboard() {
   // 한국 메달 현황
   const koreaStats = displayStandings.find((c) => c.countryCode === "KR") || koreaInitialData;
 
-  // 메달 데이터 새로고침
-  const refreshMedals = async () => {
+  // 실제 메달 데이터 로드
+  const loadMedalData = async () => {
     setLoading(true);
     try {
-      const response = await fetch("/api/scrape-medals");
-      const data = await response.json();
-      if (data.success && data.data.length > 0) {
-        setMedals(data.data);
+      const data = await fetchMedalData();
+      if (data && data.medals.length > 0) {
+        setMedals(data.medals);
+        setLastUpdate(data.lastUpdated);
       }
-      setLastUpdate(new Date().toISOString());
     } catch (error) {
-      console.error("Failed to refresh medals:", error);
+      console.error("Failed to load medals:", error);
     } finally {
       setLoading(false);
     }
   };
 
+  // 메달 데이터 새로고침 (새로운 데이터 fetch)
+  const refreshMedals = async () => {
+    await loadMedalData();
+  };
+
+  // 초기 로드
+  useEffect(() => {
+    loadMedalData();
+  }, []);
+
   // 자동 새로고침 (5분마다)
   useEffect(() => {
     const interval = setInterval(() => {
-      refreshMedals();
+      loadMedalData();
     }, 5 * 60 * 1000); // 5분
 
     return () => clearInterval(interval);

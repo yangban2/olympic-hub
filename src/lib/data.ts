@@ -1,11 +1,13 @@
-// Mock 데이터 (2026년 2월 7일 기준 - 아직 메달 없음)
+// 실제 Olympic 데이터 + Mock 데이터
+// 실제 메달 데이터는 /public/data/medals.json에서 로드
 
 import type { CountryMedal, Event, KoreanAthlete, Highlight, Badge } from "@/types";
 
-// 🚨 2026년 2월 7일 현재: 올림픽 개막, 아직 메달 수여 없음
+// 🎯 실제 메달 데이터는 fetchMedalData() 사용
+// 이 파일은 fallback & 기타 데이터만 제공
 export const medalStandings: CountryMedal[] = [];
 
-// 한국 메달 (아직 없음)
+// 한국 메달 초기값 (fallback)
 export const koreaInitialData: CountryMedal = {
   rank: 0,
   country: "South Korea",
