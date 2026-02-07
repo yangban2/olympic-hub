@@ -1,0 +1,76 @@
+{
+  "events": {
+    "evt-003": {
+      "eventId": "evt-003",
+      "sport": "Speed Skating",
+      "event": "Women's 3000m Final",
+      "athletes": [
+        { "name": "Irene Schouten", "country": "Netherlands", "flag": "🇳🇱", "favoriteLevel": "high" },
+        { "name": "Miho Takagi", "country": "Japan", "flag": "🇯🇵", "favoriteLevel": "high" },
+        { "name": "Ragne Wiklund", "country": "Norway", "flag": "🇳🇴", "favoriteLevel": "medium" },
+        { "name": "Isabelle Weidemann", "country": "Canada", "flag": "🇨🇦", "favoriteLevel": "medium" },
+        { "name": "Antoinette Rijpma-de Jong", "country": "Netherlands", "flag": "🇳🇱", "favoriteLevel": "medium" },
+        { "name": "Francesca Lollobrigida", "country": "Italy", "flag": "🇮🇹", "favoriteLevel": "medium" },
+        { "name": "Martina Sáblíková", "country": "Czech Republic", "flag": "🇨🇿", "favoriteLevel": "low" },
+        { "name": "Ivanie Blondin", "country": "Canada", "flag": "🇨🇦", "favoriteLevel": "low" },
+        { "name": "Kim Min-sun", "country": "South Korea", "flag": "🇰🇷", "favoriteLevel": "low" },
+        { "name": "Lee Seung-hoon", "country": "South Korea", "flag": "🇰🇷", "favoriteLevel": "low" }
+      ]
+    },
+    "evt-004": {
+      "eventId": "evt-004",
+      "sport": "Ski Jumping",
+      "event": "Women's Normal Hill Final",
+      "athletes": [
+        { "name": "Katharina Schmid", "country": "Germany", "flag": "🇩🇪", "favoriteLevel": "high" },
+        { "name": "Nika Prevc", "country": "Slovenia", "flag": "🇸🇮", "favoriteLevel": "high" },
+        { "name": "Sara Takanashi", "country": "Japan", "flag": "🇯🇵", "favoriteLevel": "high" },
+        { "name": "Eva Pinkelnig", "country": "Austria", "flag": "🇦🇹", "favoriteLevel": "medium" },
+        { "name": "Yuki Ito", "country": "Japan", "flag": "🇯🇵", "favoriteLevel": "medium" },
+        { "name": "Silje Opseth", "country": "Norway", "flag": "🇳🇴", "favoriteLevel": "medium" },
+        { "name": "Selina Freitag", "country": "Germany", "flag": "🇩🇪", "favoriteLevel": "medium" },
+        { "name": "Anna Odine Strøm", "country": "Norway", "flag": "🇳🇴", "favoriteLevel": "low" },
+        { "name": "Alexandria Loutitt", "country": "Canada", "flag": "🇨🇦", "favoriteLevel": "low" },
+        { "name": "Park Guy-lim", "country": "South Korea", "flag": "🇰🇷", "favoriteLevel": "low" }
+      ]
+    },
+    "evt-005": {
+      "eventId": "evt-005",
+      "sport": "Snowboarding",
+      "event": "Men's Big Air Final",
+      "athletes": [
+        { "name": "Ogiwara Hiroto", "country": "Japan", "flag": "🇯🇵", "favoriteLevel": "high" },
+        { "name": "Su Yiming", "country": "China", "flag": "🇨🇳", "favoriteLevel": "high" },
+        { "name": "Max Parrot", "country": "Canada", "flag": "🇨🇦", "favoriteLevel": "high" },
+        { "name": "Ian Matteoli", "country": "Italy", "flag": "🇮🇹", "favoriteLevel": "medium" },
+        { "name": "Valentino Guseli", "country": "Australia", "flag": "🇦🇺", "favoriteLevel": "medium" },
+        { "name": "Mons Roisland", "country": "Norway", "flag": "🇳🇴", "favoriteLevel": "medium" },
+        { "name": "Lyon Farrell", "country": "New Zealand", "flag": "🇳🇿", "favoriteLevel": "medium" },
+        { "name": "Rocco Jamieson", "country": "New Zealand", "flag": "🇳🇿", "favoriteLevel": "low" },
+        { "name": "Dane Menzies", "country": "New Zealand", "flag": "🇳🇿", "favoriteLevel": "low" },
+        { "name": "Marcus Kleveland", "country": "Norway", "flag": "🇳🇴", "favoriteLevel": "low" },
+        { "name": "Dusty Henricksen", "country": "USA", "flag": "🇺🇸", "favoriteLevel": "low" },
+        { "name": "Yuki Kimura", "country": "Japan", "flag": "🇯🇵", "favoriteLevel": "low" }
+      ]
+    },
+    "evt-009": {
+      "eventId": "evt-009",
+      "sport": "Figure Skating",
+      "event": "Team Event - Men's Short Program",
+      "athletes": [
+        { "name": "Ilia Malinin", "country": "USA", "flag": "🇺🇸", "favoriteLevel": "high" },
+        { "name": "Yuma Kagiyama", "country": "Japan", "flag": "🇯🇵", "favoriteLevel": "high" },
+        { "name": "Adam Siao Him Fa", "country": "France", "flag": "🇫🇷", "favoriteLevel": "medium" },
+        { "name": "Cha Jun-hwan", "country": "South Korea", "flag": "🇰🇷", "favoriteLevel": "medium" },
+        { "name": "Daniel Grassl", "country": "Italy", "flag": "🇮🇹", "favoriteLevel": "medium" },
+        { "name": "Kevin Aymoz", "country": "France", "flag": "🇫🇷", "favoriteLevel": "medium" },
+        { "name": "Matteo Rizzo", "country": "Italy", "flag": "🇮🇹", "favoriteLevel": "low" },
+        { "name": "Jason Brown", "country": "USA", "flag": "🇺🇸", "favoriteLevel": "low" },
+        { "name": "Shoma Uno", "country": "Japan", "flag": "🇯🇵", "favoriteLevel": "low" },
+        { "name": "Camden Pulkinen", "country": "USA", "flag": "🇺🇸", "favoriteLevel": "low" }
+      ]
+    }
+  },
+  "lastUpdated": "2026-02-07T14:20:00+01:00",
+  "source": "Milano Cortina 2026 Official Data & News Sources"
+}

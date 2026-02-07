@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import { Trophy, ArrowLeft, Medal, TrendingUp, Award, Target, Star } from "lucide-react";
 import { upcomingEvents } from "@/lib/data";
@@ -13,18 +13,48 @@ interface PredictionData {
   bronze: string;
 }
 
-// 임시 선수 목록 (실제로는 API에서 가져와야 함)
-const athletesByEvent: Record<string, string[]> = {
-  "evt-001": ["최민정 🇰🇷", "김길리 🇨🇦", "수잔 슐팅 🇳🇱", "크리스티 코반트 🇺🇸"],
-  "evt-002": ["일리아 말리닌 🇺🇸", "차준환 🇰🇷", "유마 카가야마 🇯🇵", "애덤 시아오 🇺🇸"],
-  "evt-003": ["미호 타카기 🇯🇵", "김민선 🇰🇷", "예린 판 룰펜 🇳🇱", "브리타니 보우 🇺🇸"],
-  "evt-004": ["료유 코바야시 🇯🇵", "스테판 크라프트 🇦🇹", "칼 게이거 🇩🇪", "안제 라니셰크 🇸🇮"],
-};
+interface Athlete {
+  name: string;
+  country: string;
+  flag: string;
+  favoriteLevel: "high" | "medium" | "low";
+}
+
+interface EventAthletes {
+  eventId: string;
+  sport: string;
+  event: string;
+  athletes: Athlete[];
+}
+
+interface AthletesData {
+  events: Record<string, EventAthletes>;
+  lastUpdated: string;
+  source: string;
+}
 
 export default function Predict() {
   const [predictions, setPredictions] = useState<Record<string, PredictionData>>({});
   const [userPoints, setUserPoints] = useState(0);
   const [predictionsMade, setPredictionsMade] = useState(0);
+  const [athletesData, setAthletesData] = useState<AthletesData | null>(null);
+  const [loading, setLoading] = useState(true);
+
+  // 선수 데이터 로드
+  useEffect(() => {
+    async function loadAthletes() {
+      try {
+        const response = await fetch('/data/athletes.json');
+        const data = await response.json();
+        setAthletesData(data);
+      } catch (error) {
+        console.error('Failed to load athletes data:', error);
+      } finally {
+        setLoading(false);
+      }
+    }
+    loadAthletes();
+  }, []);
 
   const handlePrediction = (eventId: string, medal: "gold" | "silver" | "bronze", athlete: string) => {
     setPredictions(prev => ({
@@ -139,109 +169,121 @@ export default function Predict() {
           오늘의 예측 가능 경기
         </h2>
 
-        <div className="grid gap-6 mb-12">
-          {upcomingEvents.slice(0, 4).map((event) => {
-            const athletes = athletesByEvent[event.id] || ["선수 A", "선수 B", "선수 C", "선수 D"];
-            const prediction = predictions[event.id];
+        {loading ? (
+          <div className="text-center py-12">
+            <div className="inline-block w-16 h-16 border-4 border-purple-600 border-t-transparent rounded-full animate-spin mb-4"></div>
+            <p className="text-gray-600 dark:text-gray-400">선수 데이터 로딩 중...</p>
+          </div>
+        ) : (
+          <div className="grid gap-6 mb-12">
+            {upcomingEvents
+              .filter(event => athletesData?.events[event.id]) // 선수 데이터가 있는 경기만 표시
+              .slice(0, 4)
+              .map((event) => {
+                const eventAthletes = athletesData?.events[event.id];
+                if (!eventAthletes) return null;
+                
+                const prediction = predictions[event.id];
 
-            return (
-              <div
-                key={event.id}
-                className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl overflow-hidden hover:shadow-2xl transition-shadow"
-              >
-                {/* Event Header */}
-                <div className="bg-gradient-to-r from-purple-500 to-pink-500 text-white p-6">
-                  <div className="flex items-start justify-between">
-                    <div>
-                      <span className="inline-block px-3 py-1 bg-white/20 backdrop-blur-sm rounded-full text-xs font-semibold mb-2">
-                        {event.sport}
-                      </span>
-                      <h3 className="text-2xl font-bold mb-2">{event.event}</h3>
-                      <p className="text-purple-100 text-sm">
-                        📍 {event.venue} • 🕐 {new Date(event.date).toLocaleString("ko-KR")}
-                      </p>
-                    </div>
-                    <Trophy className="w-12 h-12 opacity-50" />
-                  </div>
-                </div>
-
-                {/* Prediction Form */}
-                <div className="p-6">
-                  <div className="grid md:grid-cols-3 gap-6">
-                    {/* Gold */}
-                    <div>
-                      <label className="block mb-3 flex items-center gap-2">
-                        <span className="text-2xl">🥇</span>
-                        <span className="font-semibold text-gray-900 dark:text-white">금메달</span>
-                      </label>
-                      <select
-                        className="w-full p-3 border-2 border-yellow-300 dark:border-yellow-600 rounded-lg bg-yellow-50 dark:bg-gray-700 text-gray-900 dark:text-white font-medium focus:ring-2 focus:ring-yellow-500 focus:border-transparent"
-                        value={prediction?.gold || ""}
-                        onChange={(e) => handlePrediction(event.id, "gold", e.target.value)}
-                      >
-                        <option value="">선택하세요</option>
-                        {athletes.map((athlete) => (
-                          <option key={athlete} value={athlete}>
-                            {athlete}
-                          </option>
-                        ))}
-                      </select>
-                    </div>
-
-                    {/* Silver */}
-                    <div>
-                      <label className="block mb-3 flex items-center gap-2">
-                        <span className="text-2xl">🥈</span>
-                        <span className="font-semibold text-gray-900 dark:text-white">은메달</span>
-                      </label>
-                      <select
-                        className="w-full p-3 border-2 border-gray-300 dark:border-gray-600 rounded-lg bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-white font-medium focus:ring-2 focus:ring-gray-500 focus:border-transparent"
-                        value={prediction?.silver || ""}
-                        onChange={(e) => handlePrediction(event.id, "silver", e.target.value)}
-                      >
-                        <option value="">선택하세요</option>
-                        {athletes.map((athlete) => (
-                          <option key={athlete} value={athlete}>
-                            {athlete}
-                          </option>
-                        ))}
-                      </select>
-                    </div>
-
-                    {/* Bronze */}
-                    <div>
-                      <label className="block mb-3 flex items-center gap-2">
-                        <span className="text-2xl">🥉</span>
-                        <span className="font-semibold text-gray-900 dark:text-white">동메달</span>
-                      </label>
-                      <select
-                        className="w-full p-3 border-2 border-orange-300 dark:border-orange-600 rounded-lg bg-orange-50 dark:bg-gray-700 text-gray-900 dark:text-white font-medium focus:ring-2 focus:ring-orange-500 focus:border-transparent"
-                        value={prediction?.bronze || ""}
-                        onChange={(e) => handlePrediction(event.id, "bronze", e.target.value)}
-                      >
-                        <option value="">선택하세요</option>
-                        {athletes.map((athlete) => (
-                          <option key={athlete} value={athlete}>
-                            {athlete}
-                          </option>
-                        ))}
-                      </select>
-                    </div>
-                  </div>
-
-                  {/* Submit Button */}
-                  <button
-                    onClick={() => submitPrediction(event.id)}
-                    className="mt-6 w-full py-4 bg-gradient-to-r from-purple-600 to-pink-600 text-white font-bold rounded-xl hover:from-purple-700 hover:to-pink-700 transition-all transform hover:scale-[1.02] shadow-lg flex items-center justify-center gap-2"
+                return (
+                  <div
+                    key={event.id}
+                    className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl overflow-hidden hover:shadow-2xl transition-shadow"
                   >
-                    <Trophy className="w-5 h-5" />
-                    예측 제출하기
-                  </button>
-                </div>
-              </div>
-            );
-          })}
-        </div>
+                    {/* Event Header */}
+                    <div className="bg-gradient-to-r from-purple-500 to-pink-500 text-white p-6">
+                      <div className="flex items-start justify-between">
+                        <div>
+                          <span className="inline-block px-3 py-1 bg-white/20 backdrop-blur-sm rounded-full text-xs font-semibold mb-2">
+                            {event.sport}
+                          </span>
+                          <h3 className="text-2xl font-bold mb-2">{event.event}</h3>
+                          <p className="text-purple-100 text-sm">
+                            📍 {event.venue} • 🕐 {new Date(event.date).toLocaleString("ko-KR")}
+                          </p>
+                        </div>
+                        <Trophy className="w-12 h-12 opacity-50" />
+                      </div>
+                    </div>
+
+                    {/* Prediction Form */}
+                    <div className="p-6">
+                      <div className="grid md:grid-cols-3 gap-6">
+                        {/* Gold */}
+                        <div>
+                          <label className="block mb-3 flex items-center gap-2">
+                            <span className="text-2xl">🥇</span>
+                            <span className="font-semibold text-gray-900 dark:text-white">금메달</span>
+                          </label>
+                          <select
+                            className="w-full p-3 border-2 border-yellow-300 dark:border-yellow-600 rounded-lg bg-yellow-50 dark:bg-gray-700 text-gray-900 dark:text-white font-medium focus:ring-2 focus:ring-yellow-500 focus:border-transparent"
+                            value={prediction?.gold || ""}
+                            onChange={(e) => handlePrediction(event.id, "gold", e.target.value)}
+                          >
+                            <option value="">선택하세요</option>
+                            {eventAthletes.athletes.map((athlete) => (
+                              <option key={`${athlete.name}-${athlete.country}`} value={`${athlete.name} ${athlete.flag}`}>
+                                {athlete.flag} {athlete.name} ({athlete.country})
+                              </option>
+                            ))}
+                          </select>
+                        </div>
+
+                        {/* Silver */}
+                        <div>
+                          <label className="block mb-3 flex items-center gap-2">
+                            <span className="text-2xl">🥈</span>
+                            <span className="font-semibold text-gray-900 dark:text-white">은메달</span>
+                          </label>
+                          <select
+                            className="w-full p-3 border-2 border-gray-300 dark:border-gray-600 rounded-lg bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-white font-medium focus:ring-2 focus:ring-gray-500 focus:border-transparent"
+                            value={prediction?.silver || ""}
+                            onChange={(e) => handlePrediction(event.id, "silver", e.target.value)}
+                          >
+                            <option value="">선택하세요</option>
+                            {eventAthletes.athletes.map((athlete) => (
+                              <option key={`${athlete.name}-${athlete.country}`} value={`${athlete.name} ${athlete.flag}`}>
+                                {athlete.flag} {athlete.name} ({athlete.country})
+                              </option>
+                            ))}
+                          </select>
+                        </div>
+
+                        {/* Bronze */}
+                        <div>
+                          <label className="block mb-3 flex items-center gap-2">
+                            <span className="text-2xl">🥉</span>
+                            <span className="font-semibold text-gray-900 dark:text-white">동메달</span>
+                          </label>
+                          <select
+                            className="w-full p-3 border-2 border-orange-300 dark:border-orange-600 rounded-lg bg-orange-50 dark:bg-gray-700 text-gray-900 dark:text-white font-medium focus:ring-2 focus:ring-orange-500 focus:border-transparent"
+                            value={prediction?.bronze || ""}
+                            onChange={(e) => handlePrediction(event.id, "bronze", e.target.value)}
+                          >
+                            <option value="">선택하세요</option>
+                            {eventAthletes.athletes.map((athlete) => (
+                              <option key={`${athlete.name}-${athlete.country}`} value={`${athlete.name} ${athlete.flag}`}>
+                                {athlete.flag} {athlete.name} ({athlete.country})
+                              </option>
+                            ))}
+                          </select>
+                        </div>
+                      </div>
+
+                      {/* Submit Button */}
+                      <button
+                        onClick={() => submitPrediction(event.id)}
+                        className="mt-6 w-full py-4 bg-gradient-to-r from-purple-600 to-pink-600 text-white font-bold rounded-xl hover:from-purple-700 hover:to-pink-700 transition-all transform hover:scale-[1.02] shadow-lg flex items-center justify-center gap-2"
+                      >
+                        <Trophy className="w-5 h-5" />
+                        예측 제출하기
+                      </button>
+                    </div>
+                  </div>
+                );
+              })}
+          </div>
+        )}
 
         {/* Leaderboard */}
         <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-8">
