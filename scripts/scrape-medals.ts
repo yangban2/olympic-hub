@@ -6,8 +6,8 @@
  * 사용법:
  * pnpm run scrape-medals
  * 
- * Cron으로 자동화:
- * */5 * * * * cd /path/to/olympic-hub && pnpm run scrape-medals
+ * Cron으로 자동화 (예시):
+ * 매 5분: 0/5 * * * * cd /path/to/olympic-hub && pnpm run scrape-medals
  */
 
 import { writeFileSync } from "fs";
