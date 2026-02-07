@@ -73,4 +73,5 @@ export interface Highlight {
   imageUrl?: string;
   sport: string;
   date: string;
+  link?: string;
 }

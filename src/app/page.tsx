@@ -304,9 +304,12 @@ export default function Home() {
         </div>
         <div className="grid md:grid-cols-3 gap-6">
           {latestNews.map((news) => (
-            <div
+            <a
               key={news.id}
-              className="bg-gradient-to-br from-white to-gray-50 dark:from-gray-800 dark:to-gray-700 rounded-2xl p-6 shadow-lg hover:shadow-xl transition-all hover:-translate-y-1 border border-gray-100 dark:border-gray-600"
+              href={news.link}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="bg-gradient-to-br from-white to-gray-50 dark:from-gray-800 dark:to-gray-700 rounded-2xl p-6 shadow-lg hover:shadow-xl transition-all hover:-translate-y-1 border border-gray-100 dark:border-gray-600 block cursor-pointer"
             >
               <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-3">
                 {news.title}
@@ -318,7 +321,12 @@ export default function Home() {
                 <span>{news.sport}</span>
                 <span>{new Date(news.date).toLocaleDateString("ko-KR")}</span>
               </div>
-            </div>
+              {news.link && (
+                <div className="mt-3 text-blue-600 dark:text-blue-400 text-sm font-semibold flex items-center gap-1">
+                  자세히 보기 →
+                </div>
+              )}
+            </a>
           ))}
         </div>
       </section>
