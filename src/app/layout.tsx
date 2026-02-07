@@ -10,6 +10,9 @@ export const metadata: Metadata = {
   description: "2026 밀라노-코르티나 동계올림픽 실시간 메달 현황, 일정, 뉴스를 한눈에 확인하세요. 한국 선수단 응원하기!",
   keywords: ["올림픽", "동계올림픽", "밀라노", "코르티나", "메달", "한국", "2026", "Olympics", "Winter Olympics"],
   authors: [{ name: "Olympic Hub" }],
+  verification: {
+    google: "k6IDEPlL4D4qxXMRrSyJgOr6nIsceDDfBkIbaO7Ktlg",
+  },
   openGraph: {
     title: "Olympic Hub - 2026 동계올림픽",
     description: "실시간 메달 현황 & 일정 & 뉴스",
