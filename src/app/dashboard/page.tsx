@@ -302,7 +302,7 @@ export default function Dashboard() {
                 <div className="flex items-center justify-between text-sm">
                   <span className="text-gray-500 dark:text-gray-400">{news.sport}</span>
                   <span className="text-gray-500 dark:text-gray-400">
-                    {new Date(news.date).toLocaleDateString("ko-KR")}
+                    {news.date ? new Date(news.date).toLocaleDateString("ko-KR") : "날짜 미정"}
                   </span>
                 </div>
                 <div className="mt-4 pt-4 border-t border-gray-200 dark:border-gray-600">

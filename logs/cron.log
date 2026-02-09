@@ -1,0 +1,124 @@
+================================
+[2026-02-09 10:00:30] Olympic Hub 데이터 업데이트 시작
+[2026-02-09 10:00:31] 데이터 수집 시작...
+npm warn exec The following package was not found and will be installed: ts-node@10.9.2
+🚀 Olympic Hub 데이터 수집 시작...
+
+📊 메달 순위 수집 시작...
+📰 뉴스 수집 시작...
+🏅 하이라이트 수집 시작...
+📅 일정 수집 시작...
+❌ 에러 발생: browserType.launch: Executable doesn't exist at /Users/yangban/Library/Caches/ms-playwright/chromium_headless_shell-1208/chrome-headless-shell-mac-arm64/chrome-headless-shell
+╔═════════════════════════════════════════════════════════════════════════╗
+║ Looks like Playwright Test or Playwright was just installed or updated. ║
+║ Please run the following command to download new browsers:              ║
+║                                                                         ║
+║     npx playwright install                                              ║
+║                                                                         ║
+║ <3 Playwright Team                                                      ║
+╚═════════════════════════════════════════════════════════════════════════╝
+    at scrapeMedals (/Users/yangban/.openclaw/workspace/olympic-hub/scripts/scrape-all-data.ts:112:21)
+    at main (/Users/yangban/.openclaw/workspace/olympic-hub/scripts/scrape-all-data.ts:254:5)
+    at /Users/yangban/.openclaw/workspace/olympic-hub/scripts/scrape-all-data.ts:293:1 {
+  name: 'Error'
+}
+================================
+[2026-02-09 10:01:18] Olympic Hub 데이터 업데이트 시작
+[2026-02-09 10:01:19] 데이터 수집 시작...
+🚀 Olympic Hub 데이터 수집 시작...
+
+📊 메달 순위 수집 시작...
+📰 뉴스 수집 시작...
+🏅 하이라이트 수집 시작...
+📅 일정 수집 시작...
+❌ 뉴스 수집 실패: page.goto: net::ERR_HTTP2_PROTOCOL_ERROR at https://www.olympics.com/en/olympic-games/milano-cortina-2026/news
+Call log:
+  - navigating to "https://www.olympics.com/en/olympic-games/milano-cortina-2026/news", waiting until "networkidle"
+
+    at scrapeNews (/Users/yangban/.openclaw/workspace/olympic-hub/scripts/scrape-all-data.ts:112:16)
+    at async main (/Users/yangban/.openclaw/workspace/olympic-hub/scripts/scrape-all-data.ts:253:48) {
+  name: 'Error'
+}
+❌ 메달 수집 실패: page.goto: net::ERR_HTTP2_PROTOCOL_ERROR at https://www.olympics.com/en/olympic-games/milano-cortina-2026/medals
+Call log:
+  - navigating to "https://www.olympics.com/en/olympic-games/milano-cortina-2026/medals", waiting until "networkidle"
+
+    at scrapeMedals (/Users/yangban/.openclaw/workspace/olympic-hub/scripts/scrape-all-data.ts:117:11)
+    at async main (/Users/yangban/.openclaw/workspace/olympic-hub/scripts/scrape-all-data.ts:253:48) {
+  name: 'Error'
+}
+❌ 일정 수집 실패: page.goto: net::ERR_HTTP2_PROTOCOL_ERROR at https://www.olympics.com/en/milano-cortina-2026/schedule
+Call log:
+  - navigating to "https://www.olympics.com/en/milano-cortina-2026/schedule", waiting until "networkidle"
+
+    at scrapeSchedule (/Users/yangban/.openclaw/workspace/olympic-hub/scripts/scrape-all-data.ts:214:16)
+    at async main (/Users/yangban/.openclaw/workspace/olympic-hub/scripts/scrape-all-data.ts:253:48) {
+  name: 'Error'
+}
+❌ 하이라이트 수집 실패: page.goto: net::ERR_HTTP2_PROTOCOL_ERROR at https://www.olympics.com/en/olympic-games/milano-cortina-2026/results
+Call log:
+  - navigating to "https://www.olympics.com/en/olympic-games/milano-cortina-2026/results", waiting until "networkidle"
+
+    at scrapeHighlights (/Users/yangban/.openclaw/workspace/olympic-hub/scripts/scrape-all-data.ts:159:16)
+    at async main (/Users/yangban/.openclaw/workspace/olympic-hub/scripts/scrape-all-data.ts:253:48) {
+  name: 'Error'
+}
+❌ 에러 발생: ReferenceError: __dirname is not defined
+    at main (file:///Users/yangban/.openclaw/workspace/olympic-hub/scripts/scrape-all-data.ts:261:29)
+================================
+[2026-02-09 10:01:56] Olympic Hub 데이터 업데이트 시작
+[2026-02-09 10:01:56] 데이터 수집 시작...
+🚀 Olympic Hub 데이터 수집 시작...
+
+📊 메달 순위 수집 시작...
+📰 뉴스 수집 시작...
+🏅 하이라이트 수집 시작...
+📅 일정 수집 시작...
+❌ 뉴스 수집 실패: page.goto: Timeout 30000ms exceeded.
+Call log:
+  - navigating to "https://www.olympics.com/en/olympic-games/milano-cortina-2026/news", waiting until "networkidle"
+
+    at scrapeNews (/Users/yangban/.openclaw/workspace/olympic-hub/scripts/scrape-all-data.ts:188:8)
+    at async main (/Users/yangban/.openclaw/workspace/olympic-hub/scripts/scrape-all-data.ts:286:48) {
+  name: 'TimeoutError'
+}
+❌ 일정 수집 실패: page.goto: Timeout 30000ms exceeded.
+Call log:
+  - navigating to "https://www.olympics.com/en/milano-cortina-2026/schedule", waiting until "networkidle"
+
+    at scrapeSchedule (/Users/yangban/.openclaw/workspace/olympic-hub/scripts/scrape-all-data.ts:247:16)
+    at async main (/Users/yangban/.openclaw/workspace/olympic-hub/scripts/scrape-all-data.ts:286:48) {
+  name: 'TimeoutError'
+}
+❌ 메달 수집 실패: page.goto: Timeout 30000ms exceeded.
+Call log:
+  - navigating to "https://www.olympics.com/en/olympic-games/milano-cortina-2026/medals", waiting until "networkidle"
+
+    at scrapeMedals (/Users/yangban/.openclaw/workspace/olympic-hub/scripts/scrape-all-data.ts:128:13)
+    at async main (/Users/yangban/.openclaw/workspace/olympic-hub/scripts/scrape-all-data.ts:286:48) {
+  name: 'TimeoutError'
+}
+❌ 하이라이트 수집 실패: page.goto: Timeout 30000ms exceeded.
+Call log:
+  - navigating to "https://www.olympics.com/en/olympic-games/milano-cortina-2026/results", waiting until "networkidle"
+
+    at scrapeHighlights (/Users/yangban/.openclaw/workspace/olympic-hub/scripts/scrape-all-data.ts:248:7)
+    at async main (/Users/yangban/.openclaw/workspace/olympic-hub/scripts/scrape-all-data.ts:286:48) {
+  name: 'TimeoutError'
+}
+
+✅ 모든 데이터 저장 완료!
+📊 메달: 0개국
+📰 뉴스: 0개
+🏅 하이라이트: 0개
+📅 일정: 0개
+[2026-02-09 10:02:29] 변경사항 발견. Git commit & push...
+[main 386a097] 🏅 Auto-update Olympic data: 2026-02-09 10:02
+ 4 files changed, 15 insertions(+), 26 deletions(-)
+ create mode 100644 public/data/highlights.json
+ create mode 100644 public/data/news.json
+ create mode 100644 public/data/schedule.json
+To https://github.com/yangban2/olympic-hub.git
+   5d3d8fa..386a097  main -> main
+[2026-02-09 10:02:30] ✅ 완료!
+

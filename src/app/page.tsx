@@ -4,9 +4,10 @@ import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import Link from "next/link";
 import { Medal, Calendar, TrendingUp, Trophy, AlertCircle } from "lucide-react";
-import { upcomingEvents, highlights, koreaInitialData, expectedMedalStandings } from "@/lib/data";
+import { koreaInitialData, expectedMedalStandings } from "@/lib/data";
 import { formatDate, getMedalEmoji } from "@/lib/utils";
-import { fetchMedalData, findKoreaMedal } from "@/lib/fetch-data";
+import { fetchMedalData, findKoreaMedal, fetchNewsData, fetchHighlightsData, fetchScheduleData } from "@/lib/fetch-data";
+import type { NewsArticle, MedalHighlight, ScheduleEvent } from "@/lib/fetch-data";
 import type { CountryMedal } from "@/types";
 
 // 애니메이션 variants
@@ -28,14 +29,25 @@ const staggerContainer = {
 export default function Home() {
   const [medalStandings, setMedalStandings] = useState<CountryMedal[]>([]);
   const [loading, setLoading] = useState(true);
+  const [news, setNews] = useState<NewsArticle[]>([]);
+  const [highlights, setHighlights] = useState<MedalHighlight[]>([]);
+  const [schedule, setSchedule] = useState<ScheduleEvent[]>([]);
 
   // 실제 메달 데이터 fetch
   useEffect(() => {
     async function loadData() {
-      const data = await fetchMedalData();
-      if (data && data.medals.length > 0) {
-        setMedalStandings(data.medals);
-      }
+      const [medalsData, newsData, highlightsData, scheduleData] = await Promise.all([
+        fetchMedalData(),
+        fetchNewsData(),
+        fetchHighlightsData(),
+        fetchScheduleData(),
+      ]);
+      
+      if (medalsData?.medals) setMedalStandings(medalsData.medals);
+      if (newsData?.articles) setNews(newsData.articles);
+      if (highlightsData?.highlights) setHighlights(highlightsData.highlights);
+      if (scheduleData?.events) setSchedule(scheduleData.events);
+      
       setLoading(false);
     }
     loadData();
@@ -49,12 +61,6 @@ export default function Home() {
   
   // 표시할 순위 (메달 없으면 예상 순위)
   const displayStandings = noMedalsYet ? expectedMedalStandings : medalStandings;
-  
-  // 오늘의 주요 일정 (상위 3개)
-  const todayEvents = upcomingEvents.slice(0, 3);
-  
-  // 최신 뉴스 (상위 3개)
-  const latestNews = highlights.slice(0, 3);
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-blue-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900">
@@ -252,84 +258,165 @@ export default function Home() {
         </div>
       </section>
 
-      {/* 오늘의 주요 일정 */}
-      <section className="max-w-6xl mx-auto px-4 py-12">
-        <div className="flex items-center gap-3 mb-6">
-          <Calendar className="w-8 h-8 text-blue-500" />
+      {/* 최신 올림픽 뉴스 */}
+      <motion.section
+        className="max-w-6xl mx-auto px-4 py-12"
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, margin: "-100px" }}
+        variants={staggerContainer}
+      >
+        <div className="flex items-center gap-3 mb-8">
+          <TrendingUp className="w-8 h-8 text-blue-500" />
           <h2 className="text-3xl font-bold text-gray-900 dark:text-white">
-            오늘의 주요 일정
+            📰 최신 올림픽 뉴스
           </h2>
         </div>
-        <div className="grid md:grid-cols-3 gap-6">
-          {todayEvents.map((event) => (
-            <div
-              key={event.id}
-              className="bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-lg hover:shadow-xl transition-shadow border border-gray-100 dark:border-gray-700"
-            >
-              <div className="mb-3">
-                <span className="inline-block px-3 py-1 bg-blue-100 dark:bg-blue-900 text-blue-700 dark:text-blue-200 rounded-full text-xs font-semibold">
-                  {event.sport}
-                </span>
-              </div>
-              <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-2">
-                {event.event}
-              </h3>
-              <p className="text-sm text-gray-600 dark:text-gray-400 mb-1">
-                📍 {event.venue}
-              </p>
-              <p className="text-sm text-gray-600 dark:text-gray-400">
-                🕐 {formatDate(event.date)}
-              </p>
-            </div>
-          ))}
-        </div>
-        <div className="mt-8 text-center">
-          <Link
-            href="/dashboard"
-            className="inline-flex items-center gap-2 px-6 py-3 bg-blue-600 text-white rounded-full font-semibold hover:bg-blue-700 transition-colors"
-          >
-            전체 일정 보기
-            <Calendar className="w-5 h-5" />
-          </Link>
-        </div>
-      </section>
-
-      {/* 최신 뉴스 */}
-      <section className="max-w-6xl mx-auto px-4 py-12 pb-20">
-        <div className="flex items-center gap-3 mb-6">
-          <TrendingUp className="w-8 h-8 text-green-500" />
-          <h2 className="text-3xl font-bold text-gray-900 dark:text-white">
-            오늘의 하이라이트
-          </h2>
-        </div>
-        <div className="grid md:grid-cols-3 gap-6">
-          {latestNews.map((news) => (
-            <a
-              key={news.id}
-              href={news.link}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="bg-gradient-to-br from-white to-gray-50 dark:from-gray-800 dark:to-gray-700 rounded-2xl p-6 shadow-lg hover:shadow-xl transition-all hover:-translate-y-1 border border-gray-100 dark:border-gray-600 block cursor-pointer"
-            >
-              <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-3">
-                {news.title}
-              </h3>
-              <p className="text-gray-600 dark:text-gray-300 mb-4">
-                {news.description}
-              </p>
-              <div className="flex items-center justify-between text-sm text-gray-500 dark:text-gray-400">
-                <span>{news.sport}</span>
-                <span>{new Date(news.date).toLocaleDateString("ko-KR")}</span>
-              </div>
-              {news.link && (
-                <div className="mt-3 text-blue-600 dark:text-blue-400 text-sm font-semibold flex items-center gap-1">
-                  자세히 보기 →
+        
+        {news.length === 0 ? (
+          <div className="text-center py-12 text-gray-500">
+            뉴스를 불러오는 중...
+          </div>
+        ) : (
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {news.slice(0, 6).map((article) => (
+              <motion.a
+                key={article.id}
+                href={article.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group bg-white dark:bg-gray-800 rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all hover:-translate-y-1"
+                variants={fadeInUp}
+              >
+                {article.image && (
+                  <div className="h-48 overflow-hidden bg-gray-100 dark:bg-gray-700">
+                    <img 
+                      src={article.image} 
+                      alt={article.title}
+                      className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
+                    />
+                  </div>
+                )}
+                <div className="p-6">
+                  <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-2 line-clamp-2 group-hover:text-blue-600 transition-colors">
+                    {article.title}
+                  </h3>
+                  <p className="text-gray-600 dark:text-gray-300 text-sm mb-4 line-clamp-3">
+                    {article.summary}
+                  </p>
+                  <div className="flex items-center justify-between text-xs text-gray-500 dark:text-gray-400">
+                    <span className="px-2 py-1 bg-blue-50 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 rounded-full">
+                      {article.category}
+                    </span>
+                    <span>
+                      {new Date(article.publishedAt).toLocaleDateString('ko-KR', { 
+                        month: 'short', 
+                        day: 'numeric' 
+                      })}
+                    </span>
+                  </div>
                 </div>
-              )}
-            </a>
-          ))}
-        </div>
-      </section>
+              </motion.a>
+            ))}
+          </div>
+        )}
+      </motion.section>
+
+      {/* 오늘의 메달리스트 */}
+      {highlights.length > 0 && (
+        <motion.section
+          className="max-w-6xl mx-auto px-4 py-12"
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: "-100px" }}
+          variants={staggerContainer}
+        >
+          <div className="flex items-center gap-3 mb-8">
+            <Trophy className="w-8 h-8 text-yellow-500" />
+            <h2 className="text-3xl font-bold text-gray-900 dark:text-white">
+              🏅 오늘의 메달리스트
+            </h2>
+          </div>
+          
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+            {highlights.slice(0, 4).map((highlight, index) => (
+              <motion.div
+                key={index}
+                className="bg-gradient-to-br from-yellow-50 to-orange-50 dark:from-yellow-900/20 dark:to-orange-900/20 rounded-2xl p-6 shadow-lg border-2 border-yellow-200 dark:border-yellow-700"
+                variants={fadeInUp}
+              >
+                <div className="text-4xl mb-4">{highlight.flag}</div>
+                <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-2">
+                  {highlight.winner}
+                </h3>
+                <p className="text-sm text-gray-600 dark:text-gray-300 mb-1">
+                  {highlight.sport}
+                </p>
+                <p className="text-sm text-gray-500 dark:text-gray-400 mb-3">
+                  {highlight.event}
+                </p>
+                {highlight.result && (
+                  <div className="text-lg font-bold text-yellow-600 dark:text-yellow-400">
+                    {highlight.result}
+                  </div>
+                )}
+              </motion.div>
+            ))}
+          </div>
+        </motion.section>
+      )}
+
+      {/* 오늘/내일 주요 경기 */}
+      {schedule.length > 0 && (
+        <motion.section
+          className="max-w-6xl mx-auto px-4 py-12 pb-20"
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: "-100px" }}
+          variants={staggerContainer}
+        >
+          <div className="flex items-center gap-3 mb-8">
+            <Calendar className="w-8 h-8 text-purple-500" />
+            <h2 className="text-3xl font-bold text-gray-900 dark:text-white">
+              📅 오늘/내일 주요 경기
+            </h2>
+          </div>
+          
+          <div className="grid md:grid-cols-2 gap-4">
+            {schedule.slice(0, 8).map((event, index) => (
+              <motion.div
+                key={index}
+                className="bg-white dark:bg-gray-800 rounded-xl p-4 shadow-md hover:shadow-lg transition-all"
+                variants={fadeInUp}
+              >
+                <div className="flex items-start justify-between mb-2">
+                  <div>
+                    <div className="text-lg font-bold text-gray-900 dark:text-white">
+                      {event.sport}
+                    </div>
+                    <div className="text-sm text-gray-600 dark:text-gray-300">
+                      {event.event}
+                    </div>
+                  </div>
+                  <span className={`px-3 py-1 rounded-full text-xs font-semibold ${
+                    event.status === 'live' 
+                      ? 'bg-red-100 text-red-600 dark:bg-red-900/30 dark:text-red-400' 
+                      : event.status === 'finished'
+                      ? 'bg-gray-100 text-gray-600 dark:bg-gray-700 dark:text-gray-400'
+                      : 'bg-blue-100 text-blue-600 dark:bg-blue-900/30 dark:text-blue-400'
+                  }`}>
+                    {event.status === 'live' ? '🔴 진행 중' : event.status === 'finished' ? '완료' : '예정'}
+                  </span>
+                </div>
+                <div className="flex items-center gap-4 text-sm text-gray-500 dark:text-gray-400">
+                  <span>⏰ {event.time}</span>
+                  <span>📍 {event.venue}</span>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        </motion.section>
+      )}
 
       {/* Footer */}
       <footer className="bg-gray-900 text-white py-12">

@@ -1,6 +1,0 @@
-{
-  "crons": [{
-    "path": "/api/update-olympic-data",
-    "schedule": "0 */2 * * *"
-  }]
-}

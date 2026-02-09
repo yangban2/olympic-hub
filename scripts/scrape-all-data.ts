@@ -1,10 +1,18 @@
-import { NextResponse } from 'next/server';
-import { chromium } from 'playwright';
-import fs from 'fs/promises';
-import path from 'path';
+#!/usr/bin/env ts-node
 
-export const maxDuration = 300; // 5 minutes
-export const dynamic = 'force-dynamic';
+/**
+ * Olympic Hub - 전체 데이터 수집 스크립트
+ * 메달, 뉴스, 하이라이트, 일정을 모두 수집하여 JSON 파일로 저장
+ */
+
+import { chromium } from 'playwright';
+import * as fs from 'fs/promises';
+import * as path from 'path';
+import { fileURLToPath } from 'url';
+import { dirname } from 'path';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 
 interface MedalData {
   rank: number;
@@ -46,9 +54,24 @@ interface ScheduleEvent {
   status: 'upcoming' | 'live' | 'finished';
 }
 
-async function scrapeMedals() {
-  const browser = await chromium.launch({ headless: true });
-  const page = await browser.newPage();
+function getCountryFlag(countryCode: string): string {
+  if (!countryCode || countryCode.length < 2) return '🏳️';
+  return String.fromCodePoint(
+    ...countryCode.slice(0, 2).toUpperCase().split('').map(c => 0x1F1E6 - 65 + c.charCodeAt(0))
+  );
+}
+
+async function scrapeMedals(): Promise<MedalData[]> {
+  console.log('📊 메달 순위 수집 시작...');
+  const browser = await chromium.launch({ 
+    headless: true,
+    args: ['--disable-http2']
+  });
+  const context = await browser.newContext({
+    userAgent: 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+    viewport: { width: 1920, height: 1080 }
+  });
+  const page = await context.newPage();
   
   try {
     await page.goto('https://www.olympics.com/en/olympic-games/milano-cortina-2026/medals', {
@@ -58,14 +81,13 @@ async function scrapeMedals() {
 
     await page.waitForSelector('table', { timeout: 10000 });
 
-    const medals: MedalData[] = await page.$$eval('table tbody tr', (rows) => {
+    const medals = await page.$$eval('table tbody tr', (rows) => {
       return rows.map((row, index) => {
         const cells = row.querySelectorAll('td');
         const countryElement = cells[1];
         const country = countryElement?.textContent?.trim() || '';
         const countryCode = countryElement?.querySelector('span')?.getAttribute('data-country-code') || '';
         
-        // Flag emoji from country code
         const flag = countryCode
           ? String.fromCodePoint(...countryCode.split('').map(c => 0x1F1E6 - 65 + c.charCodeAt(0)))
           : '🏳️';
@@ -84,16 +106,26 @@ async function scrapeMedals() {
     });
 
     await browser.close();
+    console.log(`✅ 메달 데이터 ${medals.length}개국 수집 완료`);
     return medals;
   } catch (error) {
     await browser.close();
-    throw error;
+    console.error('❌ 메달 수집 실패:', error);
+    return [];
   }
 }
 
-async function scrapeNews() {
-  const browser = await chromium.launch({ headless: true });
-  const page = await browser.newPage();
+async function scrapeNews(): Promise<NewsArticle[]> {
+  console.log('📰 뉴스 수집 시작...');
+  const browser = await chromium.launch({ 
+    headless: true,
+    args: ['--disable-http2']
+  });
+  const context = await browser.newContext({
+    userAgent: 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+    viewport: { width: 1920, height: 1080 }
+  });
+  const page = await context.newPage();
   
   try {
     await page.goto('https://www.olympics.com/en/olympic-games/milano-cortina-2026/news', {
@@ -103,7 +135,7 @@ async function scrapeNews() {
 
     await page.waitForSelector('article', { timeout: 10000 });
 
-    const news: NewsArticle[] = await page.$$eval('article', (articles) => {
+    const news = await page.$$eval('article', (articles) => {
       return articles.slice(0, 10).map((article, index) => {
         const titleEl = article.querySelector('h3, h2, .title');
         const summaryEl = article.querySelector('p, .summary, .description');
@@ -128,17 +160,26 @@ async function scrapeNews() {
     });
 
     await browser.close();
+    console.log(`✅ 뉴스 ${news.length}개 수집 완료`);
     return news;
   } catch (error) {
     await browser.close();
-    console.error('News scraping failed:', error);
+    console.error('❌ 뉴스 수집 실패:', error);
     return [];
   }
 }
 
-async function scrapeHighlights() {
-  const browser = await chromium.launch({ headless: true });
-  const page = await browser.newPage();
+async function scrapeHighlights(): Promise<Highlight[]> {
+  console.log('🏅 하이라이트 수집 시작...');
+  const browser = await chromium.launch({ 
+    headless: true,
+    args: ['--disable-http2']
+  });
+  const context = await browser.newContext({
+    userAgent: 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+    viewport: { width: 1920, height: 1080 }
+  });
+  const page = await context.newPage();
   
   try {
     await page.goto('https://www.olympics.com/en/olympic-games/milano-cortina-2026/results', {
@@ -148,7 +189,7 @@ async function scrapeHighlights() {
 
     await page.waitForSelector('.result-item, .event-result', { timeout: 10000 });
 
-    const highlights: Highlight[] = await page.$$eval('.result-item, .event-result', (items) => {
+    const highlights = await page.$$eval('.result-item, .event-result', (items) => {
       return items.slice(0, 5).map((item) => {
         const sportEl = item.querySelector('.sport, [data-sport]');
         const eventEl = item.querySelector('.event, [data-event]');
@@ -181,17 +222,26 @@ async function scrapeHighlights() {
     });
 
     await browser.close();
+    console.log(`✅ 하이라이트 ${highlights.length}개 수집 완료`);
     return highlights;
   } catch (error) {
     await browser.close();
-    console.error('Highlights scraping failed:', error);
+    console.error('❌ 하이라이트 수집 실패:', error);
     return [];
   }
 }
 
-async function scrapeSchedule() {
-  const browser = await chromium.launch({ headless: true });
-  const page = await browser.newPage();
+async function scrapeSchedule(): Promise<ScheduleEvent[]> {
+  console.log('📅 일정 수집 시작...');
+  const browser = await chromium.launch({ 
+    headless: true,
+    args: ['--disable-http2']
+  });
+  const context = await browser.newContext({
+    userAgent: 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+    viewport: { width: 1920, height: 1080 }
+  });
+  const page = await context.newPage();
   
   try {
     await page.goto('https://www.olympics.com/en/milano-cortina-2026/schedule', {
@@ -201,7 +251,7 @@ async function scrapeSchedule() {
 
     await page.waitForSelector('.schedule-item, .event-schedule', { timeout: 10000 });
 
-    const schedule: ScheduleEvent[] = await page.$$eval('.schedule-item, .event-schedule', (items) => {
+    const schedule = await page.$$eval('.schedule-item, .event-schedule', (items) => {
       return items.slice(0, 20).map((item) => {
         const timeEl = item.querySelector('.time, [data-time]');
         const sportEl = item.querySelector('.sport, [data-sport]');
@@ -220,71 +270,60 @@ async function scrapeSchedule() {
     });
 
     await browser.close();
+    console.log(`✅ 일정 ${schedule.length}개 수집 완료`);
     return schedule;
   } catch (error) {
     await browser.close();
-    console.error('Schedule scraping failed:', error);
+    console.error('❌ 일정 수집 실패:', error);
     return [];
   }
 }
 
-export async function GET(request: Request) {
-  try {
-    const authHeader = request.headers.get('authorization');
-    if (authHeader !== `Bearer ${process.env.CRON_SECRET}`) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-    }
+async function main() {
+  console.log('🚀 Olympic Hub 데이터 수집 시작...\n');
 
-    console.log('🚀 Olympic Hub data update started...');
+  // 병렬로 모든 데이터 수집
+  const [medals, news, highlights, schedule] = await Promise.all([
+    scrapeMedals(),
+    scrapeNews(),
+    scrapeHighlights(),
+    scrapeSchedule(),
+  ]);
 
-    // Scrape all data in parallel
-    const [medals, news, highlights, schedule] = await Promise.all([
-      scrapeMedals(),
-      scrapeNews(),
-      scrapeHighlights(),
-      scrapeSchedule(),
-    ]);
+  // 데이터 디렉토리
+  const dataDir = path.join(__dirname, '..', 'public', 'data');
+  await fs.mkdir(dataDir, { recursive: true });
 
-    // Save data files
-    const dataDir = path.join(process.cwd(), 'public', 'data');
-    await fs.mkdir(dataDir, { recursive: true });
+  // JSON 파일로 저장
+  const timestamp = new Date().toISOString();
 
-    await Promise.all([
-      fs.writeFile(
-        path.join(dataDir, 'medals.json'),
-        JSON.stringify({ lastUpdated: new Date().toISOString(), medals }, null, 2)
-      ),
-      fs.writeFile(
-        path.join(dataDir, 'news.json'),
-        JSON.stringify({ lastUpdated: new Date().toISOString(), articles: news }, null, 2)
-      ),
-      fs.writeFile(
-        path.join(dataDir, 'highlights.json'),
-        JSON.stringify({ lastUpdated: new Date().toISOString(), highlights }, null, 2)
-      ),
-      fs.writeFile(
-        path.join(dataDir, 'schedule.json'),
-        JSON.stringify({ lastUpdated: new Date().toISOString(), events: schedule }, null, 2)
-      ),
-    ]);
+  await Promise.all([
+    fs.writeFile(
+      path.join(dataDir, 'medals.json'),
+      JSON.stringify({ lastUpdated: timestamp, medals }, null, 2)
+    ),
+    fs.writeFile(
+      path.join(dataDir, 'news.json'),
+      JSON.stringify({ lastUpdated: timestamp, articles: news }, null, 2)
+    ),
+    fs.writeFile(
+      path.join(dataDir, 'highlights.json'),
+      JSON.stringify({ lastUpdated: timestamp, highlights }, null, 2)
+    ),
+    fs.writeFile(
+      path.join(dataDir, 'schedule.json'),
+      JSON.stringify({ lastUpdated: timestamp, events: schedule }, null, 2)
+    ),
+  ]);
 
-    console.log('✅ All data updated successfully!');
-
-    return NextResponse.json({
-      success: true,
-      timestamp: new Date().toISOString(),
-      data: {
-        medals: medals.length,
-        news: news.length,
-        highlights: highlights.length,
-        schedule: schedule.length,
-      },
-    });
-  } catch (error: any) {
-    console.error('❌ Update failed:', error);
-    return NextResponse.json(
-      { error: 'Update failed', message: error.message },
-      { status: 500 }
-    );
-  }
+  console.log('\n✅ 모든 데이터 저장 완료!');
+  console.log(`📊 메달: ${medals.length}개국`);
+  console.log(`📰 뉴스: ${news.length}개`);
+  console.log(`🏅 하이라이트: ${highlights.length}개`);
+  console.log(`📅 일정: ${schedule.length}개`);
 }
+
+main().catch((error) => {
+  console.error('❌ 에러 발생:', error);
+  process.exit(1);
+});
