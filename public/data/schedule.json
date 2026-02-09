@@ -1,25 +1,74 @@
 {
-  "lastUpdated": "2026-02-09T10:15:00+09:00",
+  "lastUpdated": "2026-02-09T10:36:00+09:00",
   "events": [
     {
       "time": "18:00",
       "sport": "Figure Skating",
-      "event": "Men's Short Program",
+      "event": "Team Event - Women's Short Program",
       "venue": "Mediolanum Forum",
       "status": "upcoming"
     },
     {
-      "time": "20:30",
+      "time": "19:30",
+      "sport": "Alpine Skiing",
+      "event": "Men's Giant Slalom - Run 1",
+      "venue": "Cortina d'Ampezzo",
+      "status": "upcoming"
+    },
+    {
+      "time": "20:00",
       "sport": "Ice Hockey",
-      "event": "Men's Preliminary Round - USA vs Canada",
+      "event": "Men's Preliminary - Canada vs Sweden",
       "venue": "PalaItalia",
+      "status": "upcoming"
+    },
+    {
+      "time": "20:30",
+      "sport": "Biathlon",
+      "event": "Women's 15km Individual",
+      "venue": "Antholz-Anterselva",
       "status": "upcoming"
     },
     {
       "time": "21:00",
       "sport": "Speed Skating",
-      "event": "Men's 5000m",
+      "event": "Women's 1500m",
       "venue": "Oval Lingotto",
+      "status": "upcoming"
+    },
+    {
+      "time": "21:30",
+      "sport": "Snowboarding",
+      "event": "Women's Slopestyle Final",
+      "venue": "Milan Big Air",
+      "status": "upcoming"
+    },
+    {
+      "time": "22:00",
+      "sport": "Short Track",
+      "event": "Men's 1000m Heats",
+      "venue": "PalaItalia Santa Giulia",
+      "status": "upcoming"
+    },
+    {
+      "time": "22:30",
+      "sport": "Curling",
+      "event": "Mixed Doubles - Round Robin",
+      "venue": "Palazzetto Sport",
+      "status": "upcoming"
+    },
+    {
+      "time": "23:00",
+      "sport": "Freestyle Skiing",
+      "event": "Women's Moguls Final",
+      "venue": "Livigno Freestyle Centre",
+      "status": "upcoming"
+    },
+    {
+      "time": "23:30",
+      "sport": "Luge",
+      "event": "Men's Singles - Run 1",
+      "venue": "Cortina Sliding Centre",
       "status": "upcoming"
     }
   ]

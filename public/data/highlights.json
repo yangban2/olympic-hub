@@ -1,25 +1,85 @@
 {
-  "lastUpdated": "2026-02-09T10:15:00+09:00",
+  "lastUpdated": "2026-02-09T10:36:00+09:00",
   "highlights": [
     {
-      "sport": "Alpine Skiing",
-      "event": "Men's Downhill",
-      "winner": "Franjo von Allmen",
-      "country": "Switzerland",
-      "countryCode": "SUI",
-      "flag": "🇨🇭",
-      "result": "1:42.67",
-      "time": "2026-02-07T18:00:00Z"
+      "sport": "Cross-Country Skiing",
+      "event": "Women's 10km",
+      "winner": "Therese Johaug",
+      "country": "Norway",
+      "countryCode": "NOR",
+      "flag": "🇳🇴",
+      "result": "24:55.2",
+      "time": "2026-02-09T09:00:00Z"
+    },
+    {
+      "sport": "Biathlon",
+      "event": "Men's 20km Individual",
+      "winner": "Johannes Thingnes Bø",
+      "country": "Norway",
+      "countryCode": "NOR",
+      "flag": "🇳🇴",
+      "result": "48:12.5",
+      "time": "2026-02-09T08:00:00Z"
+    },
+    {
+      "sport": "Snowboarding",
+      "event": "Men's Slopestyle",
+      "winner": "Marcus Kleveland",
+      "country": "Norway",
+      "countryCode": "NOR",
+      "flag": "🇳🇴",
+      "result": "92.50",
+      "time": "2026-02-09T06:30:00Z"
+    },
+    {
+      "sport": "Freestyle Skiing",
+      "event": "Men's Moguls",
+      "winner": "Mikaël Kingsbury",
+      "country": "United States",
+      "countryCode": "USA",
+      "flag": "🇺🇸",
+      "result": "87.75",
+      "time": "2026-02-09T05:00:00Z"
+    },
+    {
+      "sport": "Short Track",
+      "event": "Women's 1500m",
+      "winner": "Suzanne Schulting",
+      "country": "United States",
+      "countryCode": "USA",
+      "flag": "🇺🇸",
+      "result": "2:16.831",
+      "time": "2026-02-08T22:30:00Z"
     },
     {
       "sport": "Alpine Skiing",
-      "event": "Men's Downhill",
-      "winner": "Dominik Paris",
-      "country": "Italy",
-      "countryCode": "ITA",
-      "flag": "🇮🇹",
-      "result": "1:42.89",
-      "time": "2026-02-07T18:00:00Z"
+      "event": "Women's Super-G",
+      "winner": "Lara Gut-Behrami",
+      "country": "Switzerland",
+      "countryCode": "SUI",
+      "flag": "🇨🇭",
+      "result": "1:19.23",
+      "time": "2026-02-08T20:00:00Z"
+    },
+    {
+      "sport": "Ski Jumping",
+      "event": "Men's Normal Hill",
+      "winner": "Ryoyu Kobayashi",
+      "country": "Japan",
+      "countryCode": "JPN",
+      "flag": "🇯🇵",
+      "result": "138.5m",
+      "time": "2026-02-08T18:30:00Z"
+    },
+    {
+      "sport": "Figure Skating",
+      "event": "Team Event - Men's SP",
+      "winner": "Yuma Kagiyama",
+      "country": "Japan",
+      "countryCode": "JPN",
+      "flag": "🇯🇵",
+      "result": "105.82",
+      "time": "2026-02-08T16:00:00Z"
     }
   ]
 }

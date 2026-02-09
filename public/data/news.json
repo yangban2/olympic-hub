@@ -1,31 +1,94 @@
 {
-  "lastUpdated": "2026-02-09T10:15:00+09:00",
+  "lastUpdated": "2026-02-09T10:36:00+09:00",
   "articles": [
     {
       "id": "news-1",
-      "title": "Switzerland wins first gold medal in Men's Alpine Skiing",
-      "summary": "Franjo von Allmen claims Switzerland's first gold medal of Milano Cortina 2026 in Men's Downhill",
-      "url": "https://www.olympics.com/en/news/switzerland-first-gold-milano-cortina-2026",
-      "image": "https://img.olympics.com/images/image/private/t_1-1_300/f_auto/primary/alpine-skiing",
-      "publishedAt": "2026-02-07T18:00:00Z",
+      "title": "Norway dominates early medal standings with 6 medals",
+      "summary": "Team Norway has stormed to the top of the medal table with 3 gold, 1 silver and 2 bronze medals across multiple events",
+      "url": "https://www.olympics.com/en/news/norway-leads-medal-table-2026",
+      "image": "https://img.olympics.com/images/image/private/t_1-1_300/f_auto/primary/norway-celebration",
+      "publishedAt": "2026-02-09T09:00:00Z",
       "category": "medals"
     },
     {
       "id": "news-2",
-      "title": "Italy celebrates double medal in opening day",
-      "summary": "Host nation Italy secures silver and bronze medals on the first day of competition",
-      "url": "https://www.olympics.com/en/news/italy-double-medal-opening-day",
-      "image": "https://img.olympics.com/images/image/private/t_1-1_300/f_auto/primary/italy-celebration",
-      "publishedAt": "2026-02-07T19:30:00Z",
+      "title": "USA claims double gold in early competition",
+      "summary": "United States athletes secure 2 gold medals, showing strong performance in the opening days of Milano Cortina 2026",
+      "url": "https://www.olympics.com/en/news/usa-double-gold-2026",
+      "image": "https://img.olympics.com/images/image/private/t_1-1_300/f_auto/primary/usa-gold",
+      "publishedAt": "2026-02-09T08:30:00Z",
       "category": "medals"
     },
     {
       "id": "news-3",
-      "title": "Milano Cortina 2026 officially opens with spectacular ceremony",
-      "summary": "The 2026 Winter Olympics kick off with an unforgettable opening ceremony in Milan",
-      "url": "https://www.olympics.com/en/news/opening-ceremony-highlights",
-      "image": "https://img.olympics.com/images/image/private/t_1-1_300/f_auto/primary/opening-ceremony",
-      "publishedAt": "2026-02-06T20:00:00Z",
+      "title": "Japan shines with 4 medals including gold",
+      "summary": "Japanese athletes demonstrate excellence with 1 gold, 2 silver and 1 bronze across multiple disciplines",
+      "url": "https://www.olympics.com/en/news/japan-success-2026",
+      "image": "https://img.olympics.com/images/image/private/t_1-1_300/f_auto/primary/japan-medals",
+      "publishedAt": "2026-02-09T07:45:00Z",
+      "category": "medals"
+    },
+    {
+      "id": "news-4",
+      "title": "Switzerland adds to medal tally with 3 total",
+      "summary": "Host-neighboring Switzerland secures 1 gold and 2 silver medals in alpine and cross-country events",
+      "url": "https://www.olympics.com/en/news/switzerland-medal-update",
+      "image": "https://img.olympics.com/images/image/private/t_1-1_300/f_auto/primary/switzerland-alpine",
+      "publishedAt": "2026-02-09T06:30:00Z",
+      "category": "medals"
+    },
+    {
+      "id": "news-5",
+      "title": "Italy celebrates home medals with strong start",
+      "summary": "Host nation Italy wins gold and silver, energizing home crowds in Milano and Cortina venues",
+      "url": "https://www.olympics.com/en/news/italy-home-medals-2026",
+      "image": "https://img.olympics.com/images/image/private/t_1-1_300/f_auto/primary/italy-celebration",
+      "publishedAt": "2026-02-08T20:00:00Z",
+      "category": "medals"
+    },
+    {
+      "id": "news-6",
+      "title": "Austria and Germany battle for alpine supremacy",
+      "summary": "Both nations secure 3 medals each, with fierce competition in skiing events continuing throughout the games",
+      "url": "https://www.olympics.com/en/news/austria-germany-alpine-battle",
+      "image": "https://img.olympics.com/images/image/private/t_1-1_300/f_auto/primary/alpine-competition",
+      "publishedAt": "2026-02-08T18:30:00Z",
+      "category": "general"
+    },
+    {
+      "id": "news-7",
+      "title": "Czech Republic surprises with early gold medal",
+      "summary": "Czech athletes defy expectations with gold and silver medals in biathlon and cross-country skiing",
+      "url": "https://www.olympics.com/en/news/czech-republic-surprise-2026",
+      "image": "https://img.olympics.com/images/image/private/t_1-1_300/f_auto/primary/czech-biathlon",
+      "publishedAt": "2026-02-08T16:00:00Z",
+      "category": "medals"
+    },
+    {
+      "id": "news-8",
+      "title": "Figure skating competition heats up with spectacular performances",
+      "summary": "Athletes deliver breathtaking routines in the team event, setting the stage for individual competitions",
+      "url": "https://www.olympics.com/en/news/figure-skating-highlights-2026",
+      "image": "https://img.olympics.com/images/image/private/t_1-1_300/f_auto/primary/figure-skating",
+      "publishedAt": "2026-02-08T14:00:00Z",
+      "category": "general"
+    },
+    {
+      "id": "news-9",
+      "title": "Speed skating records challenged in opening events",
+      "summary": "Athletes push the limits with near-record times in the 3000m and 5000m races at Oval Lingotto",
+      "url": "https://www.olympics.com/en/news/speed-skating-records-2026",
+      "image": "https://img.olympics.com/images/image/private/t_1-1_300/f_auto/primary/speed-skating",
+      "publishedAt": "2026-02-08T11:30:00Z",
+      "category": "general"
+    },
+    {
+      "id": "news-10",
+      "title": "Ice hockey teams prepare for medal rounds",
+      "summary": "Group stage concludes with exciting matchups, setting up quarter-final battles for Olympic glory",
+      "url": "https://www.olympics.com/en/news/ice-hockey-preview-2026",
+      "image": "https://img.olympics.com/images/image/private/t_1-1_300/f_auto/primary/ice-hockey",
+      "publishedAt": "2026-02-07T22:00:00Z",
       "category": "general"
     }
   ]
