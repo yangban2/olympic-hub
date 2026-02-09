@@ -1,27 +1,87 @@
 {
-  "lastUpdated": "2026-02-07T21:23:00+01:00",
-  "completedEvents": 1,
+  "lastUpdated": "2026-02-09T10:20:00+09:00",
+  "completedEvents": 13,
   "totalEvents": 116,
   "medals": [
     {
       "rank": 1,
-      "country": "Switzerland",
-      "countryCode": "SUI",
-      "gold": 1,
-      "silver": 0,
-      "bronze": 0,
-      "total": 1,
-      "flag": "🇨🇭"
+      "country": "Norway",
+      "countryCode": "NOR",
+      "flag": "🇳🇴",
+      "gold": 3,
+      "silver": 1,
+      "bronze": 2,
+      "total": 6
     },
     {
       "rank": 2,
-      "country": "Italy",
-      "countryCode": "ITA",
-      "gold": 0,
+      "country": "United States",
+      "countryCode": "USA",
+      "flag": "🇺🇸",
+      "gold": 2,
+      "silver": 0,
+      "bronze": 0,
+      "total": 2
+    },
+    {
+      "rank": 3,
+      "country": "Switzerland",
+      "countryCode": "SUI",
+      "flag": "🇨🇭",
+      "gold": 1,
+      "silver": 2,
+      "bronze": 0,
+      "total": 3
+    },
+    {
+      "rank": 4,
+      "country": "Japan",
+      "countryCode": "JPN",
+      "flag": "🇯🇵",
+      "gold": 1,
+      "silver": 2,
+      "bronze": 1,
+      "total": 4
+    },
+    {
+      "rank": 5,
+      "country": "Austria",
+      "countryCode": "AUT",
+      "flag": "🇦🇹",
+      "gold": 1,
+      "silver": 2,
+      "bronze": 0,
+      "total": 3
+    },
+    {
+      "rank": 6,
+      "country": "Germany",
+      "countryCode": "GER",
+      "flag": "🇩🇪",
+      "gold": 1,
       "silver": 1,
       "bronze": 1,
-      "total": 2,
-      "flag": "🇮🇹"
+      "total": 3
+    },
+    {
+      "rank": 7,
+      "country": "Czech Republic",
+      "countryCode": "CZE",
+      "flag": "🇨🇿",
+      "gold": 1,
+      "silver": 1,
+      "bronze": 0,
+      "total": 2
+    },
+    {
+      "rank": 8,
+      "country": "Italy",
+      "countryCode": "ITA",
+      "flag": "🇮🇹",
+      "gold": 1,
+      "silver": 1,
+      "bronze": 0,
+      "total": 2
     }
   ]
 }
