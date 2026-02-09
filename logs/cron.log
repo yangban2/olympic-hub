@@ -135,3 +135,48 @@ To eliminate this warning, add "type": "module" to /Users/yangban/.openclaw/work
 📰 뉴스 수집 시작...
 🏅 하이라이트 수집 시작...
 📅 일정 수집 시작...
+❌ 하이라이트 수집 실패: page.goto: net::ERR_TIMED_OUT at https://www.olympics.com/en/olympic-games/milano-cortina-2026/results
+Call log:
+  - navigating to "https://www.olympics.com/en/olympic-games/milano-cortina-2026/results", waiting until "networkidle"
+
+    at scrapeHighlights (/Users/yangban/.openclaw/workspace/olympic-hub/scripts/scrape-all-data.ts:248:7)
+    at async main (/Users/yangban/.openclaw/workspace/olympic-hub/scripts/scrape-all-data.ts:286:48) {
+  name: 'Error'
+}
+❌ 뉴스 수집 실패: page.goto: Timeout 30000ms exceeded.
+Call log:
+  - navigating to "https://www.olympics.com/en/olympic-games/milano-cortina-2026/news", waiting until "networkidle"
+
+    at scrapeNews (/Users/yangban/.openclaw/workspace/olympic-hub/scripts/scrape-all-data.ts:188:8)
+    at async main (/Users/yangban/.openclaw/workspace/olympic-hub/scripts/scrape-all-data.ts:286:48) {
+  name: 'TimeoutError'
+}
+❌ 메달 수집 실패: page.goto: Timeout 30000ms exceeded.
+Call log:
+  - navigating to "https://www.olympics.com/en/olympic-games/milano-cortina-2026/medals", waiting until "networkidle"
+
+    at scrapeMedals (/Users/yangban/.openclaw/workspace/olympic-hub/scripts/scrape-all-data.ts:128:13)
+    at async main (/Users/yangban/.openclaw/workspace/olympic-hub/scripts/scrape-all-data.ts:286:48) {
+  name: 'TimeoutError'
+}
+❌ 일정 수집 실패: page.goto: Timeout 30000ms exceeded.
+Call log:
+  - navigating to "https://www.olympics.com/en/milano-cortina-2026/schedule", waiting until "networkidle"
+
+    at scrapeSchedule (/Users/yangban/.openclaw/workspace/olympic-hub/scripts/scrape-all-data.ts:247:16)
+    at async main (/Users/yangban/.openclaw/workspace/olympic-hub/scripts/scrape-all-data.ts:286:48) {
+  name: 'TimeoutError'
+}
+
+✅ 모든 데이터 저장 완료!
+📊 메달: 0개국
+📰 뉴스: 0개
+🏅 하이라이트: 0개
+📅 일정: 0개
+[2026-02-09 10:07:00] 변경사항 발견. Git commit & push...
+[main 04ca074] 🏅 Auto-update Olympic data: 2026-02-09 10:07
+ 4 files changed, 4 insertions(+), 4 deletions(-)
+To https://github.com/yangban2/olympic-hub.git
+   801d159..04ca074  main -> main
+[2026-02-09 10:07:01] ✅ 완료!
+

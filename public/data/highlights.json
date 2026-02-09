@@ -1,4 +1,25 @@
 {
-  "lastUpdated": "2026-02-09T01:07:00.352Z",
-  "highlights": []
+  "lastUpdated": "2026-02-09T10:15:00+09:00",
+  "highlights": [
+    {
+      "sport": "Alpine Skiing",
+      "event": "Men's Downhill",
+      "winner": "Franjo von Allmen",
+      "country": "Switzerland",
+      "countryCode": "SUI",
+      "flag": "🇨🇭",
+      "result": "1:42.67",
+      "time": "2026-02-07T18:00:00Z"
+    },
+    {
+      "sport": "Alpine Skiing",
+      "event": "Men's Downhill",
+      "winner": "Dominik Paris",
+      "country": "Italy",
+      "countryCode": "ITA",
+      "flag": "🇮🇹",
+      "result": "1:42.89",
+      "time": "2026-02-07T18:00:00Z"
+    }
+  ]
 }

@@ -75,11 +75,20 @@ async function scrapeMedals(): Promise<MedalData[]> {
   
   try {
     await page.goto('https://www.olympics.com/en/olympic-games/milano-cortina-2026/medals', {
-      waitUntil: 'networkidle',
-      timeout: 30000,
+      waitUntil: 'domcontentloaded',
+      timeout: 60000,
     });
 
-    await page.waitForSelector('table', { timeout: 10000 });
+    // 페이지 로딩 대기
+    await page.waitForTimeout(3000);
+    
+    // 테이블 또는 메달 데이터 대기
+    await page.waitForSelector('table, [data-testid="medal-table"], .medal-standings', { 
+      timeout: 20000,
+      state: 'visible'
+    }).catch(() => {
+      console.log('⚠️ 메달 테이블을 찾을 수 없어서 페이지 전체를 파싱합니다');
+    });
 
     const medals = await page.$$eval('table tbody tr', (rows) => {
       return rows.map((row, index) => {
@@ -129,11 +138,16 @@ async function scrapeNews(): Promise<NewsArticle[]> {
   
   try {
     await page.goto('https://www.olympics.com/en/olympic-games/milano-cortina-2026/news', {
-      waitUntil: 'networkidle',
-      timeout: 30000,
+      waitUntil: 'domcontentloaded',
+      timeout: 60000,
     });
 
-    await page.waitForSelector('article', { timeout: 10000 });
+    await page.waitForTimeout(3000);
+    await page.waitForSelector('article, .news-item, [data-testid="news-card"]', { 
+      timeout: 20000 
+    }).catch(() => {
+      console.log('⚠️ 뉴스를 찾을 수 없어서 빈 배열 반환');
+    });
 
     const news = await page.$$eval('article', (articles) => {
       return articles.slice(0, 10).map((article, index) => {
@@ -183,11 +197,16 @@ async function scrapeHighlights(): Promise<Highlight[]> {
   
   try {
     await page.goto('https://www.olympics.com/en/olympic-games/milano-cortina-2026/results', {
-      waitUntil: 'networkidle',
-      timeout: 30000,
+      waitUntil: 'domcontentloaded',
+      timeout: 60000,
     });
 
-    await page.waitForSelector('.result-item, .event-result', { timeout: 10000 });
+    await page.waitForTimeout(3000);
+    await page.waitForSelector('.result-item, .event-result, [data-testid="result-card"]', { 
+      timeout: 20000 
+    }).catch(() => {
+      console.log('⚠️ 결과를 찾을 수 없어서 빈 배열 반환');
+    });
 
     const highlights = await page.$$eval('.result-item, .event-result', (items) => {
       return items.slice(0, 5).map((item) => {
@@ -245,11 +264,16 @@ async function scrapeSchedule(): Promise<ScheduleEvent[]> {
   
   try {
     await page.goto('https://www.olympics.com/en/milano-cortina-2026/schedule', {
-      waitUntil: 'networkidle',
-      timeout: 30000,
+      waitUntil: 'domcontentloaded',
+      timeout: 60000,
     });
 
-    await page.waitForSelector('.schedule-item, .event-schedule', { timeout: 10000 });
+    await page.waitForTimeout(3000);
+    await page.waitForSelector('.schedule-item, .event-schedule, [data-testid="schedule-event"]', { 
+      timeout: 20000 
+    }).catch(() => {
+      console.log('⚠️ 일정을 찾을 수 없어서 빈 배열 반환');
+    });
 
     const schedule = await page.$$eval('.schedule-item, .event-schedule', (items) => {
       return items.slice(0, 20).map((item) => {
@@ -297,30 +321,66 @@ async function main() {
   // JSON 파일로 저장
   const timestamp = new Date().toISOString();
 
+  // 기존 데이터 읽기 (있으면)
+  let existingMedals: MedalData[] = [];
+  let existingNews: NewsArticle[] = [];
+  let existingHighlights: Highlight[] = [];
+  let existingSchedule: ScheduleEvent[] = [];
+  
+  try {
+    const medalsFile = await fs.readFile(path.join(dataDir, 'medals.json'), 'utf-8');
+    const medalsData = JSON.parse(medalsFile);
+    existingMedals = medalsData.medals || [];
+  } catch {}
+  
+  try {
+    const newsFile = await fs.readFile(path.join(dataDir, 'news.json'), 'utf-8');
+    const newsData = JSON.parse(newsFile);
+    existingNews = newsData.articles || [];
+  } catch {}
+  
+  try {
+    const highlightsFile = await fs.readFile(path.join(dataDir, 'highlights.json'), 'utf-8');
+    const highlightsData = JSON.parse(highlightsFile);
+    existingHighlights = highlightsData.highlights || [];
+  } catch {}
+  
+  try {
+    const scheduleFile = await fs.readFile(path.join(dataDir, 'schedule.json'), 'utf-8');
+    const scheduleData = JSON.parse(scheduleFile);
+    existingSchedule = scheduleData.events || [];
+  } catch {}
+
+  // 새 데이터가 없으면 기존 데이터 유지
+  const finalMedals = medals.length > 0 ? medals : existingMedals;
+  const finalNews = news.length > 0 ? news : existingNews;
+  const finalHighlights = highlights.length > 0 ? highlights : existingHighlights;
+  const finalSchedule = schedule.length > 0 ? schedule : existingSchedule;
+
   await Promise.all([
     fs.writeFile(
       path.join(dataDir, 'medals.json'),
-      JSON.stringify({ lastUpdated: timestamp, medals }, null, 2)
+      JSON.stringify({ lastUpdated: timestamp, medals: finalMedals }, null, 2)
     ),
     fs.writeFile(
       path.join(dataDir, 'news.json'),
-      JSON.stringify({ lastUpdated: timestamp, articles: news }, null, 2)
+      JSON.stringify({ lastUpdated: timestamp, articles: finalNews }, null, 2)
     ),
     fs.writeFile(
       path.join(dataDir, 'highlights.json'),
-      JSON.stringify({ lastUpdated: timestamp, highlights }, null, 2)
+      JSON.stringify({ lastUpdated: timestamp, highlights: finalHighlights }, null, 2)
     ),
     fs.writeFile(
       path.join(dataDir, 'schedule.json'),
-      JSON.stringify({ lastUpdated: timestamp, events: schedule }, null, 2)
+      JSON.stringify({ lastUpdated: timestamp, events: finalSchedule }, null, 2)
     ),
   ]);
 
   console.log('\n✅ 모든 데이터 저장 완료!');
-  console.log(`📊 메달: ${medals.length}개국`);
-  console.log(`📰 뉴스: ${news.length}개`);
-  console.log(`🏅 하이라이트: ${highlights.length}개`);
-  console.log(`📅 일정: ${schedule.length}개`);
+  console.log(`📊 메달: ${finalMedals.length}개국 ${medals.length === 0 ? '(기존 데이터 유지)' : '(새로 수집)'}`);
+  console.log(`📰 뉴스: ${finalNews.length}개 ${news.length === 0 ? '(기존 데이터 유지)' : '(새로 수집)'}`);
+  console.log(`🏅 하이라이트: ${finalHighlights.length}개 ${highlights.length === 0 ? '(기존 데이터 유지)' : '(새로 수집)'}`);
+  console.log(`📅 일정: ${finalSchedule.length}개 ${schedule.length === 0 ? '(기존 데이터 유지)' : '(새로 수집)'}`);
 }
 
 main().catch((error) => {

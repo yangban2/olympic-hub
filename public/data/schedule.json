@@ -1,4 +1,26 @@
 {
-  "lastUpdated": "2026-02-09T01:07:00.352Z",
-  "events": []
+  "lastUpdated": "2026-02-09T10:15:00+09:00",
+  "events": [
+    {
+      "time": "18:00",
+      "sport": "Figure Skating",
+      "event": "Men's Short Program",
+      "venue": "Mediolanum Forum",
+      "status": "upcoming"
+    },
+    {
+      "time": "20:30",
+      "sport": "Ice Hockey",
+      "event": "Men's Preliminary Round - USA vs Canada",
+      "venue": "PalaItalia",
+      "status": "upcoming"
+    },
+    {
+      "time": "21:00",
+      "sport": "Speed Skating",
+      "event": "Men's 5000m",
+      "venue": "Oval Lingotto",
+      "status": "upcoming"
+    }
+  ]
 }
