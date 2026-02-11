@@ -1,8 +1,8 @@
 #!/bin/bash
 
 # Olympic Hub - 자동 데이터 업데이트 스크립트
-# macOS crontab에서 2시간마다 실행
-# 사용법: */2 * * * * /Users/yangban/.openclaw/workspace/olympic-hub/scripts/update-olympic-data.sh
+# OpenClaw cron에서 1시간마다 실행
+# 사용법: 0 * * * * /Users/yangban/.openclaw/workspace/olympic-hub/scripts/update-olympic-data.sh
 
 set -e
 
