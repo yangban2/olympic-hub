@@ -3969,3 +3969,63 @@ To https://github.com/yangban2/olympic-hub.git
    9184039..94d41a1  main -> main
 [2026-02-12 14:38:29] ✅ 완료!
 
+[2026-02-12 15:01:22 KST] 데이터 업데이트 완료 - 일부 스크랩 타임아웃으로 기존 데이터 유지, Git 커밋: bf58ab2
+================================
+[2026-02-12 15:38:29] Olympic Hub 데이터 업데이트 시작
+[2026-02-12 15:38:29] 데이터 수집 시작...
+(node:26227) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///Users/yangban/.openclaw/workspace/olympic-hub/scripts/scrape-all-data.ts is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to /Users/yangban/.openclaw/workspace/olympic-hub/package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+🚀 Olympic Hub 데이터 수집 시작...
+
+📊 메달 순위 수집 시작...
+📰 뉴스 수집 시작...
+🏅 하이라이트 수집 시작...
+📅 일정 수집 시작...
+❌ 뉴스 수집 실패: page.goto: Timeout 60000ms exceeded.
+Call log:
+  - navigating to "https://www.olympics.com/en/olympic-games/milano-cortina-2026/news", waiting until "domcontentloaded"
+
+    at scrapeNews (/Users/yangban/.openclaw/workspace/olympic-hub/scripts/scrape-all-data.ts:198:8)
+    at async main (/Users/yangban/.openclaw/workspace/olympic-hub/scripts/scrape-all-data.ts:310:48) {
+  name: 'TimeoutError'
+}
+❌ 메달 수집 실패: page.goto: Timeout 60000ms exceeded.
+Call log:
+  - navigating to "https://www.olympics.com/en/olympic-games/milano-cortina-2026/medals", waiting until "domcontentloaded"
+
+    at scrapeMedals (/Users/yangban/.openclaw/workspace/olympic-hub/scripts/scrape-all-data.ts:129:9)
+    at async main (/Users/yangban/.openclaw/workspace/olympic-hub/scripts/scrape-all-data.ts:310:48) {
+  name: 'TimeoutError'
+}
+❌ 하이라이트 수집 실패: page.goto: Timeout 60000ms exceeded.
+Call log:
+  - navigating to "https://www.olympics.com/en/olympic-games/milano-cortina-2026/results", waiting until "domcontentloaded"
+
+    at scrapeHighlights (/Users/yangban/.openclaw/workspace/olympic-hub/scripts/scrape-all-data.ts:262:6)
+    at async main (/Users/yangban/.openclaw/workspace/olympic-hub/scripts/scrape-all-data.ts:310:48) {
+  name: 'TimeoutError'
+}
+❌ 일정 수집 실패: page.goto: Timeout 60000ms exceeded.
+Call log:
+  - navigating to "https://www.olympics.com/en/milano-cortina-2026/schedule", waiting until "domcontentloaded"
+
+    at scrapeSchedule (/Users/yangban/.openclaw/workspace/olympic-hub/scripts/scrape-all-data.ts:338:11)
+    at async main (/Users/yangban/.openclaw/workspace/olympic-hub/scripts/scrape-all-data.ts:310:48) {
+  name: 'TimeoutError'
+}
+
+✅ 모든 데이터 저장 완료!
+📊 메달: 8개국 (기존 데이터 유지)
+📰 뉴스: 10개 (기존 데이터 유지)
+🏅 하이라이트: 8개 (기존 데이터 유지)
+📅 일정: 10개 (기존 데이터 유지)
+[2026-02-12 15:39:33] 변경사항 발견. Git commit & push...
+[main dcc03c3] 🏅 Auto-update Olympic data: 2026-02-12 15:39
+ 4 files changed, 4 insertions(+), 4 deletions(-)
+To https://github.com/yangban2/olympic-hub.git
+   bf58ab2..dcc03c3  main -> main
+[2026-02-12 15:39:35] ✅ 완료!
+
+[2026-02-12 16:01:19] 데이터 업데이트 실패 - 모든 스크래핑 타임아웃 (기존 데이터 유지)
